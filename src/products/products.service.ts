@@ -1,28 +1,44 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../../prisma/prisma.service';
+import { PrismaService } from 'prisma/prisma.service';
+import { CreateProductDto } from '../nest/products/create-product.dto';
 
 @Injectable()
 export class ProductsService {
   constructor(private prisma: PrismaService) {}
 
-  findAll() {
-    return this.prisma.product.findMany();
+  async findAll(page: number = 1, limit: number) {
+    const skip = (page - 1) * limit;
+
+    return this.prisma.product.findMany({
+      skip,
+      take: limit,
+      orderBy: { createdAt: 'desc' },
+    });
   }
 
-  findOne(id: number) {
-    return this.prisma.product.findUnique({
+  create(data: CreateProductDto) {
+    return this.prisma.product.create({
+      data,
+    });
+  }
+
+  async update(id: number, data: Partial<CreateProductDto>) {
+    return this.prisma.product.update({
+      where: { id },
+      data,
+    });
+  }
+
+  remove(id: number) {
+    return this.prisma.product.delete({
       where: { id },
     });
   }
 
-  create(data: { name: string; price: number; stock?: number }) {
-    return this.prisma.product.create({
-      data: {
-        ...data,
-        stock: data.stock ?? 0,
+  async search(search: string) {
+    return this.prisma.product.findMany({
+      where: {
+        name: { contains: search, mode: 'insensitive' },
       },
     });
   }
