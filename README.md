@@ -1,122 +1,223 @@
-# 🌟 ERP Backend System
+# 🚀 ERP Backend System
 
-![License](https://img.shields.io/badge/license-MIT-blue) ![NestJS](https://img.shields.io/badge/NestJS-v10-orange) ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-v15-blue) ![Prisma](https://img.shields.io/badge/Prisma-v4.16.2-lightblue)
+![NestJS](https://img.shields.io/badge/NestJS-Framework-red)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-blue)
+![Prisma](https://img.shields.io/badge/Prisma-ORM-lightgrey)
+![JWT](https://img.shields.io/badge/Auth-JWT-green)
+![License](https://img.shields.io/badge/License-MIT-yellow)
 
-A modern, secure, and scalable **ERP backend system** built with **NestJS**, **Prisma**, **PostgreSQL**, and **JWT Authentication**.  
-Supports **User & Product management**, **Roles & Permissions**, and **Activity Logging** with fully documented **Swagger API**.
+A scalable **ERP Backend API** built with **NestJS**, **Prisma**, and **PostgreSQL**.  
+This project demonstrates **secure authentication, role-based access control, and CRUD operations** for users and products.
 
----
-
-## 🔹 Features
-
-- **User Management**
-  - Create, read, update, and delete users
-  - Role-based access control (Admin/User)
-  - JWT authentication for secure endpoints
-
-- **Product Management**
-  - Create, read, update, and delete products
-  - Role-based permissions
-
-- **Roles & Permissions**
-  - Flexible system to assign multiple permissions to roles
-  - Dynamic permission checking with NestJS Guards
-
-- **Logging**
-  - Logs every CRUD action for audit purposes
-  - Easy to extend for other entities
-
-- **Documentation**
-  - Auto-generated **Swagger UI** for testing all endpoints
+Perfect for learning **modern backend architecture** and building production-ready APIs.
 
 ---
 
-## 🛠 Tech Stack
+# ✨ Features
 
-- **Backend:** [NestJS](https://nestjs.com/)  
-- **Database:** [PostgreSQL](https://www.postgresql.org/)  
-- **ORM:** [Prisma](https://www.prisma.io/)  
-- **Authentication:** JWT (JSON Web Tokens)  
-- **API Documentation:** [Swagger](https://swagger.io/)  
-- **Password Hashing:** bcrypt  
+✅ JWT Authentication  
+✅ Role-Based Access Control (RBAC)  
+✅ CRUD for Users  
+✅ CRUD for Products  
+✅ Secure password hashing with bcrypt  
+✅ Prisma ORM integration  
+✅ PostgreSQL database  
+✅ Swagger API documentation  
+✅ Modular NestJS architecture  
 
 ---
 
-## 🚀 Installation
+# 🛠️ Tech Stack
 
-1. **Clone the repository** 
+| Technology | Description |
+|-----------|-------------|
+| NestJS | Progressive Node.js framework |
+| Prisma | Next-generation ORM |
+| PostgreSQL | Relational database |
+| JWT | Secure authentication |
+| Swagger | API documentation |
+| bcrypt | Password hashing |
+
+---
+
+# 📂 Project Structure
+
+```
+src
+ ┣ auth
+ ┃ ┣ auth.controller.ts
+ ┃ ┣ auth.service.ts
+ ┃ ┗ jwt.strategy.ts
+ ┣ users
+ ┃ ┣ users.controller.ts
+ ┃ ┣ users.service.ts
+ ┃ ┗ users.module.ts
+ ┣ products
+ ┃ ┣ products.controller.ts
+ ┃ ┣ products.service.ts
+ ┃ ┗ products.module.ts
+ ┣ prisma
+ ┃ ┗ prisma.service.ts
+ ┗ main.ts
+```
+
+---
+
+# ⚙️ Installation
+
+### 1️⃣ Clone the repository
 
 ```bash
-git clone https://github.com/your-username/erp-backend.git
+git clone https://github.com/YOUR_USERNAME/erp-backend.git
 cd erp-backend
+```
 
-2. **Install dependencies** 
+---
+
+### 2️⃣ Install dependencies
 
 ```bash
 npm install
+```
 
-3. Set up environment variables
-DATABASE_URL=postgresql://USER:PASSWORD@localhost:5432/erp_db
-JWT_SECRET=your_jwt_secret
-
-Replace USER, PASSWORD, and your_jwt_secret with your own values.
-
-5. Start the development server
-npm run start:dev
-Server will run on http://localhost:3000.
-
-http://localhost:3000/api
-You can test all endpoints (login, CRUD operations, etc.) directly from the Swagger interface.
 ---
 
-## 🧩 Example Requests
-Login
-curl -X POST http://localhost:3000/auth/login \
--H "Content-Type: application/json" \
--d '{
+### 3️⃣ Setup environment variables
+
+Create `.env` file:
+
+```env
+DATABASE_URL=postgresql://USER:PASSWORD@localhost:5432/erp_db
+JWT_SECRET=supersecretkey
+```
+
+---
+
+### 4️⃣ Run Prisma migration
+
+```bash
+npx prisma migrate dev
+```
+
+---
+
+### 5️⃣ Generate Prisma Client
+
+```bash
+npx prisma generate
+```
+
+---
+
+### 6️⃣ Start the development server
+
+```bash
+npm run start:dev
+```
+
+Server will start at:
+
+```
+http://localhost:3000
+```
+
+---
+
+# 📘 API Documentation
+
+Swagger UI is available at:
+
+```
+http://localhost:3000/api
+```
+
+You can test all endpoints directly from the browser.
+
+---
+
+# 🔑 Authentication
+
+Login endpoint:
+
+```
+POST /auth/login
+```
+
+Example request:
+
+```json
+{
   "email": "admin@example.com",
   "password": "admin123"
-}'
+}
+```
 
-Create User
-curl -X POST http://localhost:3000/users \
--H "Authorization: Bearer YOUR_TOKEN" \
--H "Content-Type: application/json" \
--d '{
-  "email": "maha@email.com",
+Response:
+
+```
+access_token
+```
+
+Use it in requests:
+
+```
+Authorization: Bearer YOUR_TOKEN
+```
+
+---
+
+# 📌 Example API Requests
+
+### Create User
+
+```bash
+POST /users
+```
+
+```json
+{
+  "email": "user@email.com",
   "name": "Maha",
-  "password": "maha123",
+  "password": "123456",
   "roleId": 1
-}'
-Create Product
-curl -X POST http://localhost:3000/products \
--H "Authorization: Bearer YOUR_TOKEN" \
--H "Content-Type: application/json" \
--d '{
+}
+```
+
+---
+
+### Create Product
+
+```bash
+POST /products
+```
+
+```json
+{
   "name": "Laptop",
-  "price": 5000,
+  "price": 4500,
   "stock": 10
-}'
+}
+```
 
 ---
-## ⚡ Technologies
-**NestJS** – Node.js framework for building efficient and scalable server-side applications
-**Prisma** – Modern ORM for database access
-**PostgreSQL** – Relational database
-**JWT** – JSON Web Token authentication
-**Swagger** – API documentation
-**bcrypt** – Password hashing
+
+### Delete Product
+
+```
+DELETE /products/:id
+```
 
 ---
-## 📝 Notes
-Make sure PostgreSQL is running locally and credentials match .env.
-Always use a strong JWT_SECRET for security.
-Role-based permissions control access to endpoints; check Swagger for required permissions.
 
-----
-## 📜 License
-MIT License © 2026
+# 👩‍💻 Author
 
+**Maha Ali**
 
+- GitHub: [https://github.com/maha20514](https://github.com/maha20514)
+- LinkedIn: https://www.linkedin.com/in/maha-aledresi-32a043205/
 
+---
 
+# 📜 License
+
+This project is licensed under the **MIT License**.
